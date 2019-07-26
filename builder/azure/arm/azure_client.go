@@ -210,6 +210,7 @@ func NewAzureClient(subscriptionID, resourceGroupName, storageAccountName string
 	azureClient.GalleryImageVersionsClient.RequestInspector = withInspection(maxlen)
 	azureClient.GalleryImageVersionsClient.ResponseInspector = byConcatDecorators(byInspecting(maxlen), errorCapture(azureClient))
 	azureClient.GalleryImageVersionsClient.UserAgent = fmt.Sprintf("%s %s", useragent.String(), azureClient.GalleryImageVersionsClient.UserAgent)
+	azureClient.GalleryImageVersionsClient.Client.PollingDuration = 0 // don't timeout on copies.
 
 	azureClient.GalleryImagesClient = newCompute.NewGalleryImagesClientWithBaseURI(cloud.ResourceManagerEndpoint, subscriptionID)
 	azureClient.GalleryImagesClient.Authorizer = autorest.NewBearerAuthorizer(servicePrincipalToken)
